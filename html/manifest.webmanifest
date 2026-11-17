@@ -1,0 +1,10 @@
+{
+    "name": "ToDoHub - My Task Manager",
+    "short_name": "ToDoHub",
+    "description": "Your personal task manager",
+    "start_url": "./lesson-26-todo-app.html",
+    "display": "standalone",
+    "background_color": "#f4f6f8",
+    "theme_color": "#2563eb",
+    "orientation": "portrait"
+}

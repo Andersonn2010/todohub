@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="500"
+     height="500"
+     viewBox="0 0 500 500">
+
+    <defs>
+        <linearGradient
+id="logoBackground"
+                        x1="0%"
+                        y1="0%"
+                        x2="100%"
+                        y2="100%">
+                    
+                <stop offset="0%" stop-color="#20c9b7"/>
+                <stop offset="100%" stop-color="#006b78"/>
+
+            </linearGradient>
+            </defs>
+
+            <rect x="10"
+                y="10"
+                width="450"
+                height="460"
+                rx="65"
+                fill="url(#logoBackground)"/>
+
+                  <!-- White notebook with smoothly curved diagonal bottom -->
+<path d="M 163 105
+         H 337
+         Q 355 105 355 123
+         V 245
+         C 355 258 348 270 337 278
+         C 285 315 220 340 165 352
+         C 155 355 145 348 145 337
+         V 123
+         Q 145 105 163 105 Z"
+      fill="#ffffff"
+      stroke="#e5e7eb"
+      stroke-width="4"
+      stroke-linejoin="round"/>
+
+
+          <!-- Left-side notebook spiral binding -->
+
+<path d="M 145 145 H 126 A 12 12 0 1 0 126 169 H 145"
+      fill="none"
+      stroke="#ffffff"
+      stroke-width="12"
+      stroke-linecap="round"
+      stroke-linejoin="round"/>
+
+<path d="M 145 215 H 126 A 12 12 0 1 0 126 239 H 145"
+      fill="none"
+      stroke="#ffffff"
+      stroke-width="12"
+      stroke-linecap="round"
+      stroke-linejoin="round"/>
+
+<path d="M 145 285 H 126 A 12 12 0 1 0 126 309 H 145"
+      fill="none"
+      stroke="#ffffff"
+      stroke-width="12"
+      stroke-linecap="round"
+      stroke-linejoin="round"/>
+
+    <!-- Notebook task lines -->
+<rect x="180" y="165" width="150" height="11" rx="5.5" fill="#20c9b7"/>
+<rect x="180" y="205" width="150" height="11" rx="5.5" fill="#20c9b7"/>
+<rect x="180" y="245" width="150" height="11" rx="5.5" fill="#20c9b7"/>
+<rect x="180" y="285" width="120" height="11" rx="5.5" fill="#20c9b7"/>
+
+    <!-- Orange swoosh with increased middle-to-right width -->
+<path d="M 145 365
+         C 220 350 290 320 345 280
+         C 365 265 380 250 385 235
+         L 385 295
+         C 325 340 240 375 145 365 Z"
+      fill="#ff9f43"/>
+
+</svg>

@@ -114,18 +114,30 @@
 
 .date-time-field {
   position: relative;
+  width: 100%;
+  height: 44px;
+  margin-bottom: 12px;
 }
 
-.date-time-field .field-hint {
+.date-time-field .field-display {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  inset: 0;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   color: #888;
   pointer-events: none;
 }
 
-.date-time-field:has(input:valid) .field-hint {
-  display: none;
+.date-time-field input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
 #addTaskButton {
@@ -732,14 +744,14 @@ body.dark-theme #upcomingTaskList li {
     <input type="text" id="taskInput" placeholder="Enter a task">
 
     <div class="date-time-field">
-      <span class="field-hint">mm/dd/yyyy</span>
-      <input type="date" id="taskDate" aria-label="Task date">
-    </div>
+  <span id="dateDisplay" class="field-display">mm/dd/yyyy</span>
+  <input type="date" id="taskDate" aria-label="Task date">
+</div>
 
-    <div class="date-time-field">
-      <span class="field-hint">--/--:--</span>
-      <input type="time" id="taskTime" aria-label="Task time">
-    </div>
+<div class="date-time-field">
+  <span id="timeDisplay" class="field-display">--/--:--</span>
+  <input type="time" id="taskTime" aria-label="Task time">
+</div>
 
     <button id="addTaskButton">Add Task</button>
     <p id="message"></p>
@@ -1009,6 +1021,23 @@ let taskInput = document.getElementById("taskInput");
 let taskDate = document.getElementById("taskDate");
 
 let taskTime = document.getElementById("taskTime");
+
+
+let dateDisplay = document.getElementById("dateDisplay");
+let timeDisplay = document.getElementById("timeDisplay");
+
+function updateDateTimeDisplays() {
+    dateDisplay.textContent = taskDate.value
+        ? new Date(taskDate.value + "T00:00:00").toLocaleDateString("en-US")
+        : "mm/dd/yyyy";
+
+    timeDisplay.textContent = taskTime.value || "--/--:--";
+}
+
+taskDate.addEventListener("change", updateDateTimeDisplays);
+taskTime.addEventListener("change", updateDateTimeDisplays);
+
+updateDateTimeDisplays();
 
 let addTaskButton = document.getElementById("addTaskButton");
 
@@ -1390,6 +1419,8 @@ addTaskButton.addEventListener("click", function() {
     taskInput.value = "";
     taskDate.value = "";
     taskTime.value = "";
+
+    updateDateTimeDisplays();
 
     showAppMessage("Task added successfully!");
 

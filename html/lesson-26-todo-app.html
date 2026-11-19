@@ -128,16 +128,33 @@
   border-radius: 6px;
   color: #888;
   pointer-events: none;
+  z-index: 1;
 }
 
 .date-time-field input {
   position: absolute;
   inset: 0;
+  z-index: 2;
   width: 100%;
   height: 100%;
   margin: 0;
-  opacity: 0;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: transparent;
+  color: transparent;
   cursor: pointer;
+  appearance: auto;
+}
+
+.date-time-field input:focus {
+  background: white;
+  color: #222;
+}
+
+.date-time-field input:focus + .field-display {
+  visibility: hidden;
 }
 
 #addTaskButton {
@@ -1036,6 +1053,24 @@ function updateDateTimeDisplays() {
 
 taskDate.addEventListener("change", updateDateTimeDisplays);
 taskTime.addEventListener("change", updateDateTimeDisplays);
+
+taskDate.addEventListener("focus", function() {
+    dateDisplay.style.visibility = "hidden";
+});
+
+taskDate.addEventListener("blur", function() {
+    updateDateTimeDisplays();
+    dateDisplay.style.visibility = "visible";
+});
+
+taskTime.addEventListener("focus", function() {
+    timeDisplay.style.visibility = "hidden";
+});
+
+taskTime.addEventListener("blur", function() {
+    updateDateTimeDisplays();
+    timeDisplay.style.visibility = "visible";
+});
 
 updateDateTimeDisplays();
 

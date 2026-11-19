@@ -10,7 +10,6 @@
     <meta name="theme-color" content="#2563eb">
 
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 
     <style>
 
@@ -105,12 +104,28 @@
 }
 
 #taskForm input {
-    width: 30%;
+    width: 100%;
     padding: 12px;
     margin-bottom: 12px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 6px;
+}
+
+.date-time-field {
+  position: relative;
+}
+
+.date-time-field .field-hint {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: #888;
+  pointer-events: none;
+}
+
+.date-time-field:has(input:valid) .field-hint {
+  display: none;
 }
 
 #addTaskButton {
@@ -279,7 +294,7 @@ body.dark-theme .completedTask {
     margin-top: 20px;
 }
 
-@media (max-width: 200px) {
+@media (max-width: 400px) {
 
     .dashboardCards {
         grid-template-columns: 1fr;
@@ -709,23 +724,26 @@ body.dark-theme #upcomingTaskList li {
 
 <div id="menuOverlay"></div>
 
-<main id="appContent">
-    <section id="dashboardScreen" class="screen active">
-        <h2>Dashboard</h2>
-        <p>Welcome to ToDoHub!</p>
+<section id="dashboardScreen" class="screen active">
+  <h2>Dashboard</h2>
+  <p>Welcome to ToDoHub!</p>
 
-        <div id="taskForm">
+  <div id="taskForm">
     <input type="text" id="taskInput" placeholder="Enter a task">
 
-    <input type="date" id="taskDate">
+    <div class="date-time-field">
+      <span class="field-hint">mm/dd/yyyy</span>
+      <input type="date" id="taskDate" aria-label="Task date">
+    </div>
 
-    <input type="time" id="taskTime">
+    <div class="date-time-field">
+      <span class="field-hint">--/--:--</span>
+      <input type="time" id="taskTime" aria-label="Task time">
+    </div>
 
     <button id="addTaskButton">Add Task</button>
-
     <p id="message"></p>
-
-</div>
+  </div>
 
 <div class="dashboardCards">
 

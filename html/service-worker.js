@@ -1,5 +1,5 @@
 // Name of our app's cache
-const CACHE_NAME = "todohub-v6";
+const CACHE_NAME = "todohub-v7";
 
 // Files we want to save for offline use
 const FILES_TO_CACHE = [

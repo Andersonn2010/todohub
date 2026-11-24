@@ -111,31 +111,51 @@
             border-radius: 6px;
         }
 
-        /* Native date and time inputs; no extra display layer */
-        .date-time-field {
-            width: 100%;
-            margin-bottom: 12px;
-        }
+        
+.date-time-field {
+    position: relative;
+    width: 100%;
+    margin-bottom: 12px;
+}
 
-        .date-time-field input {
-            display: block;
-            width: 100%;
-            height: 46px;
-            margin: 0;
-            box-sizing: border-box;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            background-color: white;
-            color: #222;
-            font: inherit;
-            -webkit-appearance: none;
-            appearance: none;
-        }
+.date-time-field input {
+    display: block;
+    width: 100%;
+    height: 46px;
+    margin: 0;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    caret-color: transparent;
+    font: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+}
 
-        .date-time-field input::-webkit-date-and-time-value {
-            text-align: left;
-        }
+.date-time-field input:focus {
+    color: #222;
+    -webkit-text-fill-color: #222;
+}
+
+.date-time-field input:focus + .date-time-placeholder {
+    display: none;
+}
+
+.date-time-placeholder {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 1;
+}
+
 
         #addTaskButton {
             background-color: #2563eb;
@@ -668,13 +688,16 @@
         <div id="taskForm">
             <input type="text" id="taskInput" placeholder="Enter a task">
 
-            <div class="date-time-field">
-                <input type="date" id="taskDate" aria-label="Task date">
-            </div>
+           
+<div class="date-time-field">
+    <input type="date" id="taskDate" aria-label="Task date">
+    <span class="date-time-placeholder" id="taskDateDisplay">mm/dd/yyyy</span>
+</div>
 
-            <div class="date-time-field">
-                <input type="time" id="taskTime" aria-label="Task time">
-            </div>
+<div class="date-time-field">
+    <input type="time" id="taskTime" aria-label="Task time">
+    <span class="date-time-placeholder" id="taskTimeDisplay">--/--:--</span>
+</div>
 
             <button id="addTaskButton">Add Task</button>
             <p id="message"></p>
@@ -857,9 +880,39 @@
             });
         });
 
+        
+
         let taskInput = document.getElementById("taskInput");
         let taskDate = document.getElementById("taskDate");
         let taskTime = document.getElementById("taskTime");
+
+        let taskDateDisplay = document.getElementById("taskDateDisplay");
+        let taskTimeDisplay = document.getElementById("taskTimeDisplay");
+
+        function updateDateTimeDisplays() {
+    if (taskDate.value) {
+        let [year, month, day] = taskDate.value.split("-");
+        taskDateDisplay.textContent = `${month}/${day}/${year}`;
+    } else {
+        taskDateDisplay.textContent = "mm/dd/yyyy";
+    }
+
+    taskTimeDisplay.textContent = taskTime.value || "--/--:--";
+}
+
+    taskDate.addEventListener("change", updateDateTimeDisplays);
+taskTime.addEventListener("change", updateDateTimeDisplays);
+
+updateDateTimeDisplays();
+
+function clearTaskMessage() {
+    message.textContent = "";
+}
+
+taskInput.addEventListener("input", clearTaskMessage);
+taskDate.addEventListener("input", clearTaskMessage);s
+taskTime.addEventListener("input", clearTaskMessage);
+
         let addTaskButton = document.getElementById("addTaskButton");
         let taskList = document.getElementById("taskList");
         let todayTaskList = document.getElementById("todayTaskList");
@@ -1126,6 +1179,8 @@
             taskInput.value = "";
             taskDate.value = "";
             taskTime.value = "";
+
+            updateDateTimeDisplays();
 
             showAppMessage("Task added successfully!");
         });

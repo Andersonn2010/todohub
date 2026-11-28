@@ -391,6 +391,11 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
+        .projectDashboardCard {
+            background-color: #ecfeff;
+            border-color: #a5f3fc;
+        }
+
         .dashboardCard h3 {
             color: #64748b;
             font-size: 14px;
@@ -412,9 +417,27 @@
             line-height: 1.2;
         }
 
+        .cardLink {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2563eb;
+            transition: transform 0.2s ease;
+        }
+
+        .dashboardCard:hover .cardLink {
+    transform: translateX(3px);
+}
+
         .dashboardCard:hover {
             transform: translateY(-4px);
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .dashboardCard:focus-visible {
+            outline: 3px solid #2563eb;
+            outline-offset: 4px;
         }
 
         .dashboardCard:nth-child(1) {
@@ -752,8 +775,8 @@
 }
 
 #projectsScreen {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 #projectsScreen h2 {
     color: #2c3e50;
@@ -1224,7 +1247,11 @@
         </div>
 
         <div class="dashboardCards">
-            <div class="dashboardCard">
+            <div class="dashboardCard"
+     role="button"
+     tabindex="0"
+     onclick="showScreen('overdueTasksScreen')"
+     onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }">
                 <h3>
     <svg class="dashboardIcon" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2"
@@ -1235,9 +1262,14 @@
     Overdue Tasks
 </h3>
                 <p id="overdueCount">0</p>
+                <span class="cardLink">View overdue tasks →</span>
             </div>
 
-            <div class="dashboardCard">
+            <div class="dashboardCard" onclick="showScreen('todayTasksScreen')"
+            role="button"
+            tabindex="0"
+            onclick="showScreen('overdueTasksScreen')"
+     onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }">>
                 <h3>
     <svg class="dashboardIcon" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2"
@@ -1248,9 +1280,14 @@
     Today's Tasks
 </h3>
                 <p id="todayCount">0</p>
+                <span class="cardLink">View today's tasks →</span>
             </div>
 
-            <div class="dashboardCard">
+            <div class="dashboardCard" onclick="showScreen('completedTasksScreen')"
+            role="button"
+            tabindex="0"
+            onclick="showScreen('overdueTasksScreen')"
+     onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }">>
                 <h3>
     <svg class="dashboardIcon" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2"
@@ -1261,9 +1298,14 @@
     Completed Tasks
 </h3>
                 <p id="completedCount">0</p>
+                <span class="cardLink">View completed tasks →</span>
             </div>
 
-            <div class="dashboardCard">
+            <div class="dashboardCard" onclick="showScreen('upcomingTasksScreen')"
+            role="button"
+            tabindex="0"
+            onclick="showScreen('overdueTasksScreen')"
+     onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }">>
                 <h3>
     <svg class="dashboardIcon" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2"
@@ -1275,7 +1317,31 @@
     Upcoming Tasks
 </h3>
                 <p id="upcomingCount">0</p>
+                <span class="cardLink">View upcoming tasks →</span>
             </div>
+
+            <div class="dashboardCard projectDashboardCard"
+     onclick="showScreen('projectsScreen')"
+     role="button"
+    tabindex="0"
+    onclick="showScreen('overdueTasksScreen')"
+     onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }">>
+
+    <h3>
+        <svg class="dashboardIcon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="7" width="18" height="14" rx="2"></rect>
+            <path d="M8 7V4h8v3"></path>
+            <path d="M3 12h18"></path>
+        </svg>
+        Active Projects
+    </h3>
+
+    <p id="activeProjectCount">0</p>
+
+    <span class="cardLink">View active projects →</span>
+</div>
         </div>
     </section>
 
@@ -1481,31 +1547,40 @@
 
         let menuItems = document.querySelectorAll("#menu li");
 
-        menuItems.forEach(function(item) {
-            item.addEventListener("click", function() {
-                menuItems.forEach(function(menuItem) {
-                    menuItem.classList.remove("selected");
-                });
+function showScreen(screenId) {
+    let selectedScreen = document.getElementById(screenId);
 
-                item.classList.add("selected");
+    if (!selectedScreen) {
+        return;
+    }
 
-                let screenId = item.getAttribute("data-screen");
-                let selectedScreen = document.getElementById(screenId);
+    let allScreens = document.querySelectorAll(".screen");
 
-                if (selectedScreen) {
-                    let allScreens = document.querySelectorAll(".screen");
+    allScreens.forEach(function(screen) {
+        screen.classList.remove("active");
+    });
 
-                    allScreens.forEach(function(screen) {
-                        screen.classList.remove("active");
-                    });
+    selectedScreen.classList.add("active");
 
-                    selectedScreen.classList.add("active");
-                }
+    menuItems.forEach(function(menuItem) {
+        menuItem.classList.remove("selected");
 
-                menu.classList.remove("open");
-                menuOverlay.classList.remove("open");
-            });
-        });
+        if (menuItem.getAttribute("data-screen") === screenId) {
+            menuItem.classList.add("selected");
+        }
+    });
+
+    menu.classList.remove("open");
+    menuOverlay.classList.remove("open");
+}
+
+menuItems.forEach(function(item) {
+    item.addEventListener("click", function() {
+        let screenId = item.getAttribute("data-screen");
+        showScreen(screenId);
+    });
+});
+        let messageTimer;
 
         let taskInput = document.getElementById("taskInput");
         let taskDate = document.getElementById("taskDate");
@@ -1836,7 +1911,9 @@ taskInfo.appendChild(taskMeta);
             message.className = "errorMessage";
             message.textContent = "Please fill in all fields!";
 
-            setTimeout(function() {
+            clearTimeout(messageTimer);
+
+            messageTimer = setTimeout(function() {
                 message.textContent = "";
                 message.className = "";
             }, 3000);
@@ -1864,10 +1941,12 @@ taskInfo.appendChild(taskMeta);
             message.className = "successMessage";
             message.textContent = "Task added successfully!";
 
-            setTimeout(function() {
-            message.textContent = "";
-            message.className = "";
-        }, 3000);
+           clearTimeout(messageTimer);
+
+            messageTimer = setTimeout(function() {
+                message.textContent = "";
+                message.className = "";
+            }, 3000);
         });
 
         let reminderTime = document.getElementById("reminderTime");
@@ -2068,6 +2147,12 @@ let saveEditProjectButton = document.getElementById("saveEditProjectButton");
 
         function displayProjects() {
     projectsList.innerHTML = "";
+
+    let activeProjects = projects.filter(function(project) {
+    return project.completed === false;
+});
+
+document.getElementById("activeProjectCount").textContent = activeProjects.length;
 
     projects.forEach(function(project) {
 
